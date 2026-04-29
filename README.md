@@ -15,8 +15,8 @@ Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
 {
   "mcpServers": {
     "giga-security": {
-      "command": "node",
-      "args": ["/path/to/withgiga-ops-mcp/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
       "env": {
         "GIGA_API_KEY": "giga_sk_your_key_here"
       }
@@ -30,8 +30,8 @@ Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
 {
   "mcpServers": {
     "giga-security": {
-      "command": "node",
-      "args": ["/path/to/withgiga-ops-mcp/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
       "env": {
         "GIGA_API_KEY": "giga_sk_your_key_here"
       }
@@ -46,8 +46,8 @@ Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
   "servers": {
     "giga-security": {
       "type": "stdio",
-      "command": "node",
-      "args": ["/path/to/withgiga-ops-mcp/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
       "env": {
         "GIGA_API_KEY": "giga_sk_your_key_here"
       }
@@ -56,15 +56,7 @@ Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
 }
 ```
 
-### 3. Install
-
-```bash
-git clone git@github.com:WithGiga/withgiga-ops-mcp.git
-cd withgiga-ops-mcp
-npm install
-```
-
-Replace `/path/to/withgiga-ops-mcp` in your config with the actual clone path.
+No install step. `npx` handles everything automatically.
 
 ---
 
@@ -75,25 +67,17 @@ Everything resolves automatically from your API key — no workspace IDs or audi
 ### `list_workspaces`
 Lists all workspaces on your GigaCode account.
 
-```
-No parameters required.
-```
-
 ### `list_audits`
 Lists all security audits across every workspace, sorted newest-first. Shows type, status, score (A+→F), and finding count.
-
-```
-No parameters required.
-```
 
 ### `get_findings`
 Returns security findings with full evidence and fix recommendations. Defaults to the most recent completed audit across all workspaces.
 
-```
-audit_id  (optional) — target a specific audit
-severity  (optional) — minimum threshold: critical | high | medium | low | info
-category  (optional) — filter by category, e.g. "injection", "auth", "cors"
-```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `audit_id` | optional | Target a specific audit |
+| `severity` | optional | Minimum threshold: `critical` · `high` · `medium` · `low` · `info` |
+| `category` | optional | Filter by category, e.g. `injection`, `auth`, `cors` |
 
 Each finding includes:
 - **title** + **severity**
@@ -104,9 +88,9 @@ Each finding includes:
 ### `get_audit_report`
 Returns the full Markdown security report for a completed audit — executive summary, attack narrative, and findings table.
 
-```
-audit_id  (optional) — defaults to most recent completed audit
-```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `audit_id` | optional | Defaults to most recent completed audit |
 
 ---
 
@@ -121,7 +105,7 @@ Show me all injection vulnerabilities from the latest audit and patch them.
 ```
 
 ```
-Get the full security report for my last audit and summarize the attack narrative.
+Get the full security report and summarize what was compromised.
 ```
 
 ---
