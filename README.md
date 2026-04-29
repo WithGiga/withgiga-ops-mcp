@@ -8,17 +8,100 @@ MCP server that gives your coding agent direct access to [GigaCode](https://with
 
 Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
 
-### 2. Run the installer
+### 2. Paste this into your agent
 
-Paste this in your terminal:
+Copy the prompt below, replace `YOUR_API_KEY` with your key, and paste it directly into your AI agent (Claude Code, Cursor, Windsurf, Codex, VS Code, etc.):
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/WithGiga/withgiga-ops-mcp/main/install.sh | GIGA_API_KEY=giga_sk_YOUR_KEY_HERE bash
+---
+
+Install the Giga Security MCP server so it's available to you as a tool.
+
+Detect which AI agent/tool you are (Claude Code, Cursor, Windsurf, Codex, VS Code, etc.) and apply the correct installation method:
+
+---
+
+**Claude Code:**
+Run this command:
+```
+claude mcp add giga-security --scope user -e GIGA_API_KEY=YOUR_API_KEY -- npx -y github:WithGiga/withgiga-ops-mcp
 ```
 
-The installer automatically detects and configures **Claude Code, Cursor, VS Code, and Windsurf**. Restart your agent and the tools are ready.
+---
 
-> No API key in the command? The installer will prompt you for it.
+**Cursor:**
+Create or update `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` (project root) with:
+```json
+{
+  "mcpServers": {
+    "giga-security": {
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "env": {
+        "GIGA_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+---
+
+**Windsurf:**
+Create or update `~/.codeium/windsurf/mcp_config.json` with:
+```json
+{
+  "mcpServers": {
+    "giga-security": {
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "env": {
+        "GIGA_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+---
+
+**OpenAI Codex:**
+Create or update `~/.codex/config.json` with:
+```json
+{
+  "mcpServers": {
+    "giga-security": {
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "env": {
+        "GIGA_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+---
+
+**VS Code (Copilot):**
+Create or update `.vscode/mcp.json` in the workspace with:
+```json
+{
+  "servers": {
+    "giga-security": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "env": {
+        "GIGA_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+---
+
+After writing the config, confirm the installation was successful and that the giga-security MCP server is recognized and available.
 
 ---
 
@@ -75,5 +158,4 @@ Get the full security report and summarize what was compromised.
 ## Requirements
 
 - Node.js 18+
-- Python 3 (for the installer — pre-installed on macOS and most Linux distros)
 - A [GigaCode](https://withgiga.ai) account with at least one completed security audit
