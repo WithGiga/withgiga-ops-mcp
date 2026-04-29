@@ -8,48 +8,17 @@ MCP server that gives your coding agent direct access to [GigaCode](https://with
 
 Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
 
-### 2. Add to your coding agent
+### 2. Run the installer
 
-**Claude Code** — paste this one command in your terminal:
+Paste this in your terminal:
 
 ```bash
-claude mcp add giga-security --scope user -e GIGA_API_KEY=giga_sk_YOUR_KEY_HERE -- npx -y github:WithGiga/withgiga-ops-mcp
+curl -fsSL https://raw.githubusercontent.com/WithGiga/withgiga-ops-mcp/main/install.sh | GIGA_API_KEY=giga_sk_YOUR_KEY_HERE bash
 ```
 
-Replace `giga_sk_YOUR_KEY_HERE` with your key. Done — the tools are available globally across all your projects.
+The installer automatically detects and configures **Claude Code, Cursor, VS Code, and Windsurf**. Restart your agent and the tools are ready.
 
----
-
-**Cursor** (`~/.cursor/mcp.json`):
-```json
-{
-  "mcpServers": {
-    "giga-security": {
-      "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
-      "env": {
-        "GIGA_API_KEY": "giga_sk_your_key_here"
-      }
-    }
-  }
-}
-```
-
-**VS Code** (`.vscode/mcp.json`):
-```json
-{
-  "servers": {
-    "giga-security": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
-      "env": {
-        "GIGA_API_KEY": "giga_sk_your_key_here"
-      }
-    }
-  }
-}
-```
+> No API key in the command? The installer will prompt you for it.
 
 ---
 
@@ -106,4 +75,5 @@ Get the full security report and summarize what was compromised.
 ## Requirements
 
 - Node.js 18+
+- Python 3 (for the installer — pre-installed on macOS and most Linux distros)
 - A [GigaCode](https://withgiga.ai) account with at least one completed security audit
