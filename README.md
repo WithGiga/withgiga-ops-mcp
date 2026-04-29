@@ -10,20 +10,15 @@ Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
 
 ### 2. Add to your coding agent
 
-**Claude Code** (`~/.claude/settings.json`):
-```json
-{
-  "mcpServers": {
-    "giga-security": {
-      "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
-      "env": {
-        "GIGA_API_KEY": "giga_sk_your_key_here"
-      }
-    }
-  }
-}
+**Claude Code** — paste this one command in your terminal:
+
+```bash
+claude mcp add giga-security --scope user -e GIGA_API_KEY=giga_sk_YOUR_KEY_HERE -- npx -y github:WithGiga/withgiga-ops-mcp
 ```
+
+Replace `giga_sk_YOUR_KEY_HERE` with your key. Done — the tools are available globally across all your projects.
+
+---
 
 **Cursor** (`~/.cursor/mcp.json`):
 ```json
@@ -55,8 +50,6 @@ Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
   }
 }
 ```
-
-No install step. `npx` handles everything automatically.
 
 ---
 
