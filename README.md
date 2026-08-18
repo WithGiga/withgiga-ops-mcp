@@ -1,12 +1,12 @@
-# withgiga-ops-mcp
+# golem-security-mcp
 
-MCP server that gives your coding agent direct access to [GigaCode](https://withgiga.ai) security audit findings — vulnerabilities, evidence, and recommended fixes — so it can patch your code automatically.
+MCP server that gives your coding agent direct access to [Golem](https://usegolem.ai) security audit findings — vulnerabilities, evidence, and recommended fixes — so it can patch your code automatically.
 
 ## Setup
 
 ### 1. Get your API key
 
-Go to **withgiga.ai → Profile → API Keys** and create a key (`giga_sk_...`).
+Go to **usegolem.ai → Profile → API Keys** and create a key (`golem_sk_...`).
 
 ### 2. Paste this into your agent
 
@@ -14,7 +14,7 @@ Copy the prompt below, replace `YOUR_API_KEY` with your key, and paste it direct
 
 ---
 
-Install the Giga Security MCP server so it's available to you as a tool.
+Install the Golem Security MCP server so it's available to you as a tool.
 
 Detect which AI agent/tool you are (Claude Code, Cursor, Windsurf, Codex, VS Code, etc.) and apply the correct installation method:
 
@@ -23,7 +23,7 @@ Detect which AI agent/tool you are (Claude Code, Cursor, Windsurf, Codex, VS Cod
 **Claude Code:**
 Run this command:
 ```
-claude mcp add giga-security --scope user -e GIGA_API_KEY=YOUR_API_KEY -- npx -y github:WithGiga/withgiga-ops-mcp
+claude mcp add golem-security --scope user -e GOLEM_API_KEY=YOUR_API_KEY -- npx -y github:UseGolem/usegolem-mcp
 ```
 
 ---
@@ -33,11 +33,11 @@ Create or update `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` (project ro
 ```json
 {
   "mcpServers": {
-    "giga-security": {
+    "golem-security": {
       "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "args": ["-y", "github:UseGolem/usegolem-mcp"],
       "env": {
-        "GIGA_API_KEY": "YOUR_API_KEY"
+        "GOLEM_API_KEY": "YOUR_API_KEY"
       }
     }
   }
@@ -51,11 +51,11 @@ Create or update `~/.codeium/windsurf/mcp_config.json` with:
 ```json
 {
   "mcpServers": {
-    "giga-security": {
+    "golem-security": {
       "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "args": ["-y", "github:UseGolem/usegolem-mcp"],
       "env": {
-        "GIGA_API_KEY": "YOUR_API_KEY"
+        "GOLEM_API_KEY": "YOUR_API_KEY"
       }
     }
   }
@@ -69,11 +69,11 @@ Create or update `~/.codex/config.json` with:
 ```json
 {
   "mcpServers": {
-    "giga-security": {
+    "golem-security": {
       "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "args": ["-y", "github:UseGolem/usegolem-mcp"],
       "env": {
-        "GIGA_API_KEY": "YOUR_API_KEY"
+        "GOLEM_API_KEY": "YOUR_API_KEY"
       }
     }
   }
@@ -87,12 +87,12 @@ Create or update `.vscode/mcp.json` in the workspace with:
 ```json
 {
   "servers": {
-    "giga-security": {
+    "golem-security": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "github:WithGiga/withgiga-ops-mcp"],
+      "args": ["-y", "github:UseGolem/usegolem-mcp"],
       "env": {
-        "GIGA_API_KEY": "YOUR_API_KEY"
+        "GOLEM_API_KEY": "YOUR_API_KEY"
       }
     }
   }
@@ -101,61 +101,27 @@ Create or update `.vscode/mcp.json` in the workspace with:
 
 ---
 
-After writing the config, confirm the installation was successful and that the giga-security MCP server is recognized and available.
-
----
+After writing the config, restart your agent so it picks up the `golem-security` tools.
 
 ## Tools
 
-Everything resolves automatically from your API key — no workspace IDs or audit IDs required.
+- **`list_workspaces`** — list all workspaces on your Golem account (IDs, names, domains).
+- **`list_audits`** — list all security audits across workspaces, newest first, with status, score (A+→F), and finding counts.
+- **`get_findings`** — get findings from an audit (defaults to the most recent completed one), filterable by severity and category. Each finding includes title, severity, description, evidence, and the recommended fix.
+- **`get_audit_report`** — fetch the full Markdown report for a completed audit.
 
-### `list_workspaces`
-Lists all workspaces on your GigaCode account.
+## Environment variables
 
-### `list_audits`
-Lists all security audits across every workspace, sorted newest-first. Shows type, status, score (A+→F), and finding count.
+| Variable | Required | Description |
+| --- | --- | --- |
+| `GOLEM_API_KEY` | yes | Your API key (`golem_sk_...`). |
+| `GOLEM_API_URL` | no | API base URL. Defaults to `https://buildapi.300mil.com`. |
 
-### `get_findings`
-Returns security findings with full evidence and fix recommendations. Defaults to the most recent completed audit across all workspaces.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `audit_id` | optional | Target a specific audit |
-| `severity` | optional | Minimum threshold: `critical` · `high` · `medium` · `low` · `info` |
-| `category` | optional | Filter by category, e.g. `injection`, `auth`, `cors` |
+## One-line installer
 
-Each finding includes:
-- **title** + **severity**
-- **description** — what the vulnerability is
-- **evidence** — raw proof (HTTP requests, tool output, PoC commands)
-- **recommendation** — exactly what to fix in the code
-
-### `get_audit_report`
-Returns the full Markdown security report for a completed audit — executive summary, attack narrative, and findings table.
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `audit_id` | optional | Defaults to most recent completed audit |
-
----
-
-## Example agent prompts
-
-```
-Get my critical and high security findings and fix them in the codebase.
+```bash
+curl -fsSL https://raw.githubusercontent.com/UseGolem/usegolem-mcp/main/install.sh | bash
 ```
 
-```
-Show me all injection vulnerabilities from the latest audit and patch them.
-```
-
-```
-Get the full security report and summarize what was compromised.
-```
-
----
-
-## Requirements
-
-- Node.js 18+
-- A [GigaCode](https://withgiga.ai) account with at least one completed security audit
+Detects Claude Code, Cursor, VS Code, and Windsurf, downloads the server, and writes the MCP config for you.

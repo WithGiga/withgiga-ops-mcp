@@ -1,11 +1,11 @@
 {
-  "name": "giga-security-mcp",
+  "name": "golem-security-mcp",
   "version": "0.1.0",
-  "description": "MCP server — GigaCode security audit findings for coding agents",
+  "description": "MCP server — Golem security audit findings for coding agents",
   "type": "module",
   "files": ["dist"],
   "bin": {
-    "giga-security-mcp": "./dist/index.js"
+    "golem-security-mcp": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "scripts": {

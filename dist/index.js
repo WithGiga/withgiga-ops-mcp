@@ -21011,11 +21011,11 @@ var StdioServerTransport = class {
 };
 
 // src/index.ts
-var API_KEY = process.env.GIGA_API_KEY;
-var API_URL = (process.env.GIGA_API_URL ?? "https://buildapi.300mil.com").replace(/\/$/, "");
+var API_KEY = process.env.GOLEM_API_KEY;
+var API_URL = (process.env.GOLEM_API_URL ?? "https://buildapi.300mil.com").replace(/\/$/, "");
 if (!API_KEY) {
   process.stderr.write(
-    'Error: GIGA_API_KEY is required.\nAdd it to your MCP config: "GIGA_API_KEY": "giga_sk_..."\n'
+    'Error: GOLEM_API_KEY is required.\nAdd it to your MCP config: "GOLEM_API_KEY": "golem_sk_..."\n'
   );
   process.exit(1);
 }
@@ -21030,7 +21030,7 @@ async function apiGet(path) {
     throw new Error(`Network error: ${err instanceof Error ? err.message : err}`);
   }
   const body = await res.json();
-  if (res.status === 401) throw new Error("Invalid or expired GIGA_API_KEY.");
+  if (res.status === 401) throw new Error("Invalid or expired GOLEM_API_KEY.");
   if (res.status === 404) throw new Error(body.error?.message ?? "Resource not found.");
   if (!res.ok || !body.success) throw new Error(body.error?.message ?? `API error ${res.status}`);
   return body.data;
@@ -21049,7 +21049,7 @@ async function getAllWorkspaces() {
 async function getAllAudits() {
   const workspaces = await getAllWorkspaces();
   if (workspaces.length === 0) {
-    throw new Error("No workspaces found. Create one at withgiga.ai first.");
+    throw new Error("No workspaces found. Create one at https://usegolem.ai first.");
   }
   const perWorkspace = await Promise.all(
     workspaces.map(async (ws) => {
@@ -21074,14 +21074,14 @@ async function resolveAudit(auditId) {
   }
   const completed = all.filter((a) => a.status === "completed");
   if (completed.length === 0) {
-    throw new Error("No completed audits found. Run a security audit at withgiga.ai first.");
+    throw new Error("No completed audits found. Run a security audit at https://usegolem.ai first.");
   }
   return completed[0];
 }
-var server = new McpServer({ name: "giga-security", version: "0.1.0" });
+var server = new McpServer({ name: "golem-security", version: "0.1.0" });
 server.tool(
   "list_workspaces",
-  "List all workspaces on your GigaCode account. Workspace IDs, names, and target domains are resolved automatically from your API key.",
+  "List all workspaces on your Golem account. Workspace IDs, names, and target domains are resolved automatically from your API key.",
   {},
   async () => {
     const workspaces = await getAllWorkspaces();
@@ -21128,7 +21128,7 @@ server.tool(
 server.tool(
   "get_findings",
   [
-    "Get security findings from a GigaCode audit. Everything resolves automatically from your API key \u2014 no workspace or audit ID needed.",
+    "Get security findings from a Golem audit. Everything resolves automatically from your API key \u2014 no workspace or audit ID needed.",
     "",
     "Defaults to the most recent completed audit across all workspaces.",
     "",
